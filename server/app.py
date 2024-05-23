@@ -1,9 +1,9 @@
+from models import db, User, Book, BorrowRecord, Rating
 from flask import Flask, make_response, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
 from flask_migrate import Migrate
 import os
-
-from models import db, User, Book, BorrowRecord, Rating
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 DATABASE = os.environ.get("DB_URI", f"sqlite:///{os.path.join(BASE_DIR, 'library.db')}")
@@ -11,7 +11,9 @@ DATABASE = os.environ.get("DB_URI", f"sqlite:///{os.path.join(BASE_DIR, 'library
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.json.compact = False
 
+CORS(app)
 migrate = Migrate(app, db)
 
 db.init_app(app)
@@ -34,7 +36,6 @@ def users():
                 username=json['username'],
                 email=json['email'],
             )
-    
             db.session.add(new_user)
             db.session.commit()
             message_dict = new_user.to_dict()
@@ -54,7 +55,6 @@ def users_by_id(id):
     elif request.method == 'PATCH':
         json = request.get_json()
         try:
-            # Attempt to update the user's attributes
             for attr in json:
                 setattr(user, attr, json[attr])
 
@@ -64,7 +64,6 @@ def users_by_id(id):
 
             return make_response(jsonify(message_dict), 202)
         except ValueError as e:
-            # Handle validation error
             return make_response(jsonify({"errors": ["validation errors"]}), 400)
     
     elif request.method == 'GET':
@@ -144,7 +143,6 @@ def ratings():
             message_dict = new_rating.to_dict()
             return make_response(jsonify(message_dict), 201)
         except ValueError as e:
-            # Handle validation error
             return make_response(jsonify({"errors": ["validation errors"]}), 400)
 
 if __name__ == '__main__':
