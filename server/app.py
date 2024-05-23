@@ -52,6 +52,15 @@ def users_by_id(id):
     if user is None:
         return make_response(jsonify({"error": "User not found"}), 404)
     
+    elif request.method == 'GET':
+        try:
+            user_data = user.to_dict()
+            user_data['borrow_records'] = [record.to_dict() for record in user.borrow_records]
+            return make_response(jsonify(user_data), 200)
+        except ValueError as e:
+            error_message = str(e)
+            return make_response(jsonify({"errors": [error_message]}), 400)
+    
     elif request.method == 'PATCH':
         json = request.get_json()
         try:
@@ -65,16 +74,6 @@ def users_by_id(id):
             return make_response(jsonify(message_dict), 202)
         except ValueError as e:
             return make_response(jsonify({"errors": ["validation errors"]}), 400)
-    
-    elif request.method == 'GET':
-        try:
-            user_data = user.to_dict()
-            user_data['borrow_records'] = [record.to_dict() for record in user.borrow_records]
-            user_data['ratings'] = [rating.to_dict() for rating in user.ratings]
-            return make_response(jsonify(user_data), 200)
-        except ValueError as e:
-            error_message = str(e)
-            return make_response(jsonify({"errors": [error_message]}), 400)
 
 
 @app.route('/books', methods=['GET', 'POST'])
