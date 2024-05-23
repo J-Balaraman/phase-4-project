@@ -1,0 +1,42 @@
+.ratings {
+    padding: 2rem;
+  }
+  
+  .rating-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .rating-list li {
+    background: #f4f4f4;
+    margin: 0.5rem 0;
+    padding: 1rem;
+    border-radius: 5px;
+  }
+  
+  .rating-form {
+    margin-top: 2rem;
+  }
+  
+  .rating-form input {
+    display: block;
+    width: 100%;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .rating-form button {
+    background: #333;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .rating-form button:hover {
+    background: #555;
+  }
+  
