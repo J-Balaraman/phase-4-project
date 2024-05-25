@@ -4,28 +4,59 @@ import './Ratings.css';
 
 function Ratings() {
   const [ratings, setRatings] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [books, setBooks] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch('/ratings')
+    fetch('http://127.0.0.1:5000/ratings')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => setRatings(data))
+      .catch(error => {
+        console.error('There was an error fetching the ratings:', error);
+        setError(error);
+      });
+
+    fetch('http://127.0.0.1:5000/users')
       .then(response => response.json())
-      .then(data => setRatings(data));
+      .then(data => setUsers(data));
+
+    fetch('http://127.0.0.1:5000/books')
+      .then(response => response.json())
+      .then(data => setBooks(data));
+
   }, []);
 
   const addRating = (rating) => {
-    fetch('/ratings', {
+    fetch('http://127.0.0.1:5000/ratings', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(rating)
     })
-    .then(response => response.json())
-    .then(newRating => setRatings([...ratings, newRating]));
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(newRating => setRatings([...ratings, newRating]))
+    .catch(error => {
+      console.error('There was an error adding the rating:', error);
+      setError(error);
+    });
   };
 
   return (
     <div>
       <h2>Ratings</h2>
+      {error && <div className="error">{error.message}</div>}
       <RatingForm onSubmit={addRating} />
       <ul>
         {ratings.map(rating => (

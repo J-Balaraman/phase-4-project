@@ -145,4 +145,4 @@ def ratings():
             return make_response(jsonify({"errors": ["validation errors"]}), 400)
 
 if __name__ == '__main__':
-    app.run(port=5555, debug=True)
+    app.run(port=5000, debug=True)

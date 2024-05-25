@@ -15,6 +15,7 @@ function BookForm({ onSubmit }) {
       onSubmit={(values, { setSubmitting }) => {
         onSubmit(values);
         setSubmitting(false);
+        resetForm();
       }}
     >
       {({ isSubmitting }) => (
