@@ -1,11 +1,10 @@
+// Ratings.js
 import React, { useEffect, useState } from 'react';
 import RatingForm from './RatingForm';
 import './Ratings.css';
 
 function Ratings() {
   const [ratings, setRatings] = useState([]);
-  const [users, setUsers] = useState([]);
-  const [books, setBooks] = useState([]);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -21,15 +20,6 @@ function Ratings() {
         console.error('There was an error fetching the ratings:', error);
         setError(error);
       });
-
-    fetch('http://127.0.0.1:5000/users')
-      .then(response => response.json())
-      .then(data => setUsers(data));
-
-    fetch('http://127.0.0.1:5000/books')
-      .then(response => response.json())
-      .then(data => setBooks(data));
-
   }, []);
 
   const addRating = (rating) => {
@@ -60,7 +50,9 @@ function Ratings() {
       <RatingForm onSubmit={addRating} />
       <ul>
         {ratings.map(rating => (
-          <li key={rating.id}>User ID: {rating.user_id}, Book ID: {rating.book_id}, Rating: {rating.rating_value}</li>
+          <li key={rating.id}>
+            User: {rating.user_name}, Book: {rating.book_title}, Rating: {rating.rating_value}
+          </li>
         ))}
       </ul>
     </div>

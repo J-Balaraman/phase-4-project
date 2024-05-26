@@ -1,3 +1,4 @@
+// Users.js
 import React, { useEffect, useState } from 'react';
 import UserForm from './UserForm';
 import './Users.css';
@@ -49,7 +50,16 @@ function Users() {
       <UserForm onSubmit={addUser} />
       <ul>
         {users.map(user => (
-          <li key={user.id}>{user.username} - {user.email}</li>
+          <li key={user.id}>
+            {user.username} - {user.email}
+            <ul>
+              {user.borrow_records.map(record => (
+                <li key={record.id}>
+                  {record.book_title} (Borrowed: {record.borrow_date}, Returned: {record.return_date || 'Not returned yet'})
+                </li>
+              ))}
+            </ul>
+          </li>
         ))}
       </ul>
     </div>

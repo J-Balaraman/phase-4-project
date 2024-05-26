@@ -28,10 +28,12 @@ def users():
     if request.method == 'GET':
         users = User.query.all()
         users_json = [user.to_dict() for user in users]
+        for user in users_json:
+            user['borrow_records'] = [record.to_dict() for record in User.query.get(user['id']).borrow_records]
         return make_response(jsonify(users_json), 200)
     elif request.method == 'POST':
         try:
-            json=request.get_json()
+            json = request.get_json()
             new_user = User(
                 username=json['username'],
                 email=json['email'],
@@ -126,23 +128,29 @@ def books_by_id(id):
 def ratings():
     if request.method == 'GET':
         ratings = Rating.query.all()
-        ratings_json = [rating.to_dict() for rating in ratings]
+        ratings_json = []
+        for rating in ratings:
+            rating_dict = rating.to_dict()
+            rating_dict['user_name'] = User.query.get(rating.user_id).username
+            rating_dict['book_title'] = Book.query.get(rating.book_id).title
+            ratings_json.append(rating_dict)
         return make_response(jsonify(ratings_json), 200)
     elif request.method == 'POST':
         try:
-            json=request.get_json()
+            json = request.get_json()
             new_rating = Rating(
                 user_id=json['user_id'],
                 book_id=json['book_id'],
                 rating_value=json['rating_value']
             )
-    
+
             db.session.add(new_rating)
             db.session.commit()
             message_dict = new_rating.to_dict()
             return make_response(jsonify(message_dict), 201)
         except ValueError as e:
             return make_response(jsonify({"errors": ["validation errors"]}), 400)
+
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
