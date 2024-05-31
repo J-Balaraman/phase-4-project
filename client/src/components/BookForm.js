@@ -12,7 +12,7 @@ function BookForm({ onSubmit }) {
     <Formik
       initialValues={{ title: '', author: '' }}
       validationSchema={BookSchema}
-      onSubmit={(values, { setSubmitting }) => {
+      onSubmit={(values, { setSubmitting, resetForm }) => {
         onSubmit(values);
         setSubmitting(false);
         resetForm();

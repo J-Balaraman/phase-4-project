@@ -12,7 +12,7 @@ function UserForm({ onSubmit }) {
     <Formik
       initialValues={{ username: '', email: '' }}
       validationSchema={UserSchema}
-      onSubmit={(values, { setSubmitting }) => {
+      onSubmit={(values, { setSubmitting, resetForm }) => {
         onSubmit(values);
         setSubmitting(false);
         resetForm();

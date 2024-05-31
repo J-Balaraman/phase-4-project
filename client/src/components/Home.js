@@ -16,7 +16,7 @@ function Home() {
       <h2>About</h2>
       <p>This application is built using the Flask framework and SQLAlchemy for database management. It supports CRUD operations for users, books, and borrow records, and it uses RESTful APIs to interact with the database.</p>
 
-      <p>For more information, check out the project's documentation and source code on <a href="https://github.com/your-repo">GitHub</a>.</p>
+      <p>For more information, check out the project's documentation and source code on <a href="https://github.com">GitHub</a>.</p>
     </div>
   );
 }

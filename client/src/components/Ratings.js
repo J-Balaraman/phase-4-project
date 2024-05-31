@@ -1,4 +1,3 @@
-// Ratings.js
 import React, { useEffect, useState } from 'react';
 import RatingForm from './RatingForm';
 import './Ratings.css';

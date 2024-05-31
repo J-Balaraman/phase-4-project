@@ -36,15 +36,17 @@ def users():
             json = request.get_json()
             new_user = User(
                 username=json['username'],
-                email=json['email'],
+                email=json['email']
             )
             db.session.add(new_user)
             db.session.commit()
             message_dict = new_user.to_dict()
+            message_dict['borrow_records'] = [] 
             return make_response(jsonify(message_dict), 201)
         except ValueError as e:
             error_message = str(e)
             return make_response(jsonify({"errors": error_message}), 400)
+
 
 
 @app.route('/users/<int:id>', methods=['GET', 'PATCH'])
